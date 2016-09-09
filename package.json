@@ -1,0 +1,23 @@
+{
+  "name": "cmm-frontend",
+  "version": "1.0.0",
+  "description": "Frontend for the cmm language",
+  "keywords": [
+    "cmm",
+    "frontend"
+  ],
+  "author": "Ricard Gascons",
+  "license": "ISC",
+  "devDependencies": {
+    "browserify": "^13.1.0",
+    "coffeeify": "^2.0.1",
+    "gulp": "^3.9.1",
+    "gulp-coffee": "^2.3.2",
+    "gulp-download": "0.0.1",
+    "gulp-replace": "^0.5.4",
+    "gulp-util": "^3.0.7",
+    "gulp-webserver": "^0.9.1",
+    "request": "^2.74.0",
+    "vinyl-source-stream": "^1.1.0"
+  }
+}
