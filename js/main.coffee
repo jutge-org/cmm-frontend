@@ -10,7 +10,7 @@ $ -> # Equivalent to $(document).ready(function() {...})
 
     w = null
     do resetWorker = ->
-        w = new Worker("js/run.js")
+        w = new Worker("js/run.min.js")
 
         w.onmessage = (e) ->
             { data: { type, value }} = e
