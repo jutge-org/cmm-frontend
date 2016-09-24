@@ -1,11 +1,17 @@
 importScripts('index.min.js');
 
+{ compile, execute, events } = self.cmm
+
+events.onstdout (
+        (output) -> setOutput output
+    )
+
 makeCompilation = (code, showAst = no) ->
     setOutput ""
     setStatus "Compiling"
 
     try
-        ast = self.compile code
+        ast = compile code
     catch error
         console.log(error.stack ? error.message ? error)
         setOutput "#{error.message}"
@@ -21,15 +27,13 @@ makeExecution = (ast, input) ->
     setStatus "Running"
 
     try
-        { stdout, stderr, output, status } = self.execute(ast, input)
+        { stderr, status } = execute(ast, input)
     catch error
         console.log(error.stack ? error.message ? error)
         setOutput "#{error.stack ? error.message}"
         return
 
     setStatus status
-    setOutput output
-
 
 setOutput = (s) -> postMessage({ type: "output", value: s })
 setStatus = (s) -> postMessage({ type: "status", value: s })
