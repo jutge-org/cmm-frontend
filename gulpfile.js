@@ -55,7 +55,7 @@ gulp.task('browserify-run', () => {
         .pipe(gulp.dest('./js'))
 });
 
-gulp.task('dev', () => {
+gulp.task('dev', ['compile-main', 'browserify-run'], () => {
     gulp.src('./')
         .pipe(webserver({
             livereload: true,
