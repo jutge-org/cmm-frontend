@@ -1,8 +1,9 @@
 Build
 -----------
-First off, you need `gulp` installed globally. Then run:
+First off, you need `gulp` and `bower` installed globally. Then run:
 ```
 npm install
+bower install
 gulp
 ```
 

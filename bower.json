@@ -1,0 +1,26 @@
+{
+  "name": "cmm-frontend",
+  "description": "Frontend for the cmm language",
+  "main": "index.html",
+  "authors": [
+    "Ricard Gascons"
+  ],
+  "license": "ISC",
+  "keywords": [
+    "cmm",
+    "frontend"
+  ],
+  "homepage": "https://github.com/zakum42/cmm-frontend",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "ace-builds": "^1.2.5",
+    "bootstrap": "^3.3.7",
+    "jquery": "^3.1.1"
+  }
+}

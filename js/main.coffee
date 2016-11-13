@@ -1,11 +1,27 @@
 $ -> # Equivalent to $(document).ready(function() {...})
 # Place the code editor
-    codeMirror = CodeMirror(((elt) -> $("#code").replaceWith(elt)),
-        {
-            mode: "text/x-c++src"
-            value: samplePrograms.default.code
-            theme: "material"
-        }
+    editor = ace.edit("editor")
+    editor.setTheme("ace/theme/twilight")
+    editor.getSession().setMode("ace/mode/c_cpp")
+    editor.setValue(samplePrograms.default.code, -1)
+    editor.$blockScrolling = Infinity
+
+    editor.on("guttermousedown", (e) ->
+        target = e.domEvent.target
+        if target.className.indexOf("ace_gutter-cell") == -1
+            return
+        if !editor.isFocused()
+            editor.focus()
+        if e.clientX > 25 + target.getBoundingClientRect().left
+            return
+
+        row = e.getDocumentPosition().row
+        breakpoints = e.editor.session.getBreakpoints(row, 0)
+        if typeof breakpoints[row] == typeof undefined
+            e.editor.session.setBreakpoint(row)
+        else
+            e.editor.session.clearBreakpoint(row)
+        e.stop()
     )
 
     w = null
@@ -20,11 +36,11 @@ $ -> # Equivalent to $(document).ready(function() {...})
                 $("#output").text(value)
 
     $("#compile").click(->
-        w.postMessage({ command: "compile", code: codeMirror.getValue() })
+        w.postMessage({ command: "compile", code: editor.getValue() })
     )
 
     $("#run").click(->
-        w.postMessage({ command: "run", code: codeMirror.getValue(), input: $("#input").val() })
+        w.postMessage({ command: "run", code: editor.getValue(), input: $("#input").val() })
     )
 
     $("#kill").click(->
@@ -37,7 +53,10 @@ $ -> # Equivalent to $(document).ready(function() {...})
         option = $(this).text()
         data = $(this).data('value')
         $(this).parents(".dropdown").find('.btn').html(option + ' <span class="caret"></span>')
-        codeMirror.getDoc().setValue(samplePrograms[data].code)
+        editor.setValue(samplePrograms[data].code, -1)
+        breakpoints = editor.session.getBreakpoints(undefined, 0)
+        for b of breakpoints
+            editor.session.clearBreakpoint(b);
         $("#input").val(samplePrograms[data].in)
     )
 

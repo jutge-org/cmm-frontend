@@ -6,15 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-    <script src="jquery/jquery-2.2.4.js"></script>
-    <link rel="stylesheet" href="bootstrap/css/bootstrap-theme.min.css">
-    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="codemirror/codemirror.css">
-    <link rel="stylesheet" href="codemirror/material.css">
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="css/main.css">
-    <script src="bootstrap/js/bootstrap.min.js"></script>
-    <script src="codemirror/codemirror.js"></script>
-    <script src="codemirror/clike.js"></script>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="bower_components/ace-builds/src/ace.js" type="text/javascript" charset="utf-8"></script>
     <script src="js/main.min.js"></script>
 </head>
 
@@ -61,7 +58,7 @@
                     </div>
                     <div class="panel-body">
                         <div class="form-group">
-                          <textarea class="form-control" id="code" rows="20"></textarea>
+                          <div class="form-control" id="editor" rows="20"></div>
                         </div>
                     </div>
                 </div>
