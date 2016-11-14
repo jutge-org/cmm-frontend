@@ -1,10 +1,10 @@
 $ -> # Equivalent to $(document).ready(function() {...})
 # Place the code editor
     editor = ace.edit("editor")
+    editor.$blockScrolling = Infinity
     editor.setTheme("ace/theme/twilight")
     editor.getSession().setMode("ace/mode/c_cpp")
     editor.setValue(samplePrograms.default.code, -1)
-    editor.$blockScrolling = Infinity
 
     editor.on("guttermousedown", (e) ->
         target = e.domEvent.target
