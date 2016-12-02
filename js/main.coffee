@@ -1,10 +1,12 @@
+window.w = null
+
 $ -> # Equivalent to $(document).ready(function() {...})
 # Place the code editor
     editor = ace.edit("editor")
     editor.$blockScrolling = Infinity
     editor.setTheme("ace/theme/twilight")
     editor.getSession().setMode("ace/mode/c_cpp")
-    editor.setValue(samplePrograms.default.code, -1)
+    editor.setValue(samplePrograms.default_template.code, -1)
 
     editor.on("guttermousedown", (e) ->
         target = e.domEvent.target
@@ -24,45 +26,54 @@ $ -> # Equivalent to $(document).ready(function() {...})
         e.stop()
     )
 
-    w = null
     do resetWorker = ->
-        w = new Worker("js/run.min.js")
+        window.w = new Worker("js/run.min.js")
 
-        w.onmessage = (e) ->
+        window.w.onmessage = (e) ->
             { data: { type, value }} = e
             if type is "status"
-                $("#exitstatus").text(value)
+                {msg: s, color: c} = value
+                $("#exitstatus").css("background-color", c)
+                $("#exitstatus").text(s)
             else
-                $("#output").text(value)
+                term = $.terminal.active()
+                if value != '\n'
+                    window.buffer += value
+                else
+                    term.echo window.buffer
+                    window.buffer = ''
 
     $("#compile").click(->
-        w.postMessage({ command: "compile", code: editor.getValue() })
+        window.w.postMessage({ command: "compile", code: editor.getValue() })
     )
 
     $("#run").click(->
-        w.postMessage({ command: "run", code: editor.getValue(), input: $("#input").val() })
+        console.log buffer
+        window.w.postMessage({ command: "run", code: editor.getValue(), input: buffer })
     )
 
     $("#kill").click(->
         $("#exitstatus").text("Killed")
-        w.terminate()
+        window.w.terminate()
         resetWorker()
     )
 
-    $(".dropdown-menu li a").click(->
-        option = $(this).text()
+    $("#continue").click(->
+        window.w.postMessage({ command: "continue", input: $("#input").val() })
+    )
+
+    $("#example-menu > div").click(->
         data = $(this).data('value')
-        $(this).parents(".dropdown").find('.btn').html(option + ' <span class="caret"></span>')
         editor.setValue(samplePrograms[data].code, -1)
         breakpoints = editor.session.getBreakpoints(undefined, 0)
         for b of breakpoints
             editor.session.clearBreakpoint(b);
-        $("#input").val(samplePrograms[data].in)
+        #$("#input").val(samplePrograms[data].in)
     )
 
 # Name the entries after the data-value attribute
 samplePrograms =
-    default:
+    default_template:
         code:
             """
                 #include <iostream>
