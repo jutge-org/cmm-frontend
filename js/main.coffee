@@ -3,6 +3,7 @@ window.w = null
 $ -> # Equivalent to $(document).ready(function() {...})
 # Place the code editor
     editor = ace.edit("editor")
+    window.editor = editor
     editor.$blockScrolling = Infinity
     editor.setTheme("ace/theme/twilight")
     editor.getSession().setMode("ace/mode/c_cpp")
@@ -35,31 +36,41 @@ $ -> # Equivalent to $(document).ready(function() {...})
                 {msg: s, color: c} = value
                 $("#exitstatus").css("background-color", c)
                 $("#exitstatus").text(s)
-            else
+            else if type is "output"
                 term = $.terminal.active()
                 if value != '\n'
                     window.buffer += value
                 else
                     term.echo window.buffer
                     window.buffer = ''
+            else if type is "errormsg"
+                term = $.terminal.active()
+                term.echo "[[b;white;black]#{value}]"
+            else #terminate
+                editor.setReadOnly no
+                resetWorker()
+
 
     $("#compile").click(->
         window.w.postMessage({ command: "compile", code: editor.getValue() })
     )
 
-    $("#run").click(->
-        console.log buffer
-        window.w.postMessage({ command: "run", code: editor.getValue(), input: buffer })
+    $("#run-button,#run-menu").click(->
+        editor.setReadOnly yes
+        $.terminal.active().focus()
+        window.w.postMessage({ command: "run", code: editor.getValue(), input: buffer, breakpoints: getBreakpoints() })
     )
 
-    $("#kill").click(->
+    $("#kill-button,#kill-menu").click(->
+        editor.setReadOnly no
         $("#exitstatus").text("Killed")
         window.w.terminate()
         resetWorker()
     )
 
-    $("#continue").click(->
-        window.w.postMessage({ command: "continue", input: $("#input").val() })
+    $("#continue-button").click(->
+        $.terminal.active().focus()
+        window.w.postMessage({ command: "continue", breakpoints: getBreakpoints() })
     )
 
     $("#example-menu > div").click(->
@@ -68,8 +79,13 @@ $ -> # Equivalent to $(document).ready(function() {...})
         breakpoints = editor.session.getBreakpoints(undefined, 0)
         for b of breakpoints
             editor.session.clearBreakpoint(b);
-        #$("#input").val(samplePrograms[data].in)
     )
+
+    getBreakpoints = ->
+        breakpoints = editor.session.getBreakpoints(undefined, 0)
+        breakpoints = Object.keys(breakpoints)
+        breakpoints = breakpoints.map((e) -> parseInt(e)+1)
+        breakpoints
 
 # Name the entries after the data-value attribute
 samplePrograms =
