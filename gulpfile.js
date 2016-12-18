@@ -55,7 +55,24 @@ gulp.task('browserify-run', () => {
         .pipe(gulp.dest('./js'))
 });
 
-gulp.task('dev', ['compile-main', 'browserify-run'], () => {
+gulp.task('compile-main-dev', () => {
+    gulp.src('./js/main.coffee')
+        .pipe(coffee({}).on('error', gutil.log))
+        .pipe(rename({ suffix: '.min' }))
+        .pipe(gulp.dest('./js'));
+});
+
+gulp.task('browserify-run-dev', () => {
+    return browserify('./js/run.coffee', {extensions:['.coffee']})
+        .transform(coffeeify)
+        .bundle()
+        .pipe(source('run.min.js'))
+        .pipe(replace('onmessage, ', ''))
+        .pipe(buffer())
+        .pipe(gulp.dest('./js'))
+});
+
+gulp.task('dev', ['compile-main-dev', 'browserify-run-dev'], () => {
     gulp.src('./')
         .pipe(webserver({
             livereload: true,

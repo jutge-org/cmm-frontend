@@ -11,7 +11,7 @@ jQuery(function($, undefined) {
   $('#terminal').terminal(function(command, term) {
       if (command !== '') {
           try {
-              window.w.postMessage({ command: "continue", input: command, breakpoints: getBreakpoints() });
+              window.w.postMessage({ command: "input", input: command });
           } catch(e) {
               term.error(new String(e));
           }

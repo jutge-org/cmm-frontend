@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="X-UA-Compatible" content="IE=ejtg-cpp-variables-tablee">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>C--</title>
@@ -87,7 +87,7 @@
 
       <div data-options="region:'east',split:true" style="width:50%">
         <!-- Plugins get this pane to paint things -->
-        <div id="jtg-plugin-pane" style="width:100%;//height:100%;">
+        <div id="jtg-plugin-pane" style="width:100%;height:100%;">
 
           <div class="easyui-tabs" style="width:100%;height:100%;">
             <div title="variables">
@@ -126,9 +126,14 @@
         </div>
 
         <div style="width:100%;height:26px">
-          <a id="run-button" href="#" class="easyui-linkbutton" data-options="iconCls:'play'">Run</a>
-          <a id="kill-button" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-cancel'">Kill</a>
-          <a id="continue-button" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-continue'">Continue</a>
+          <a id="run-button" href="#" style="margin-left: 10px;" class="easyui-linkbutton easyui-tooltip" data-options="iconCls:'icon-start',position:'top'" title="Run"></a> <!--run-->
+          <a id="debug-button" href="#" style="margin-right: 10px;" class="easyui-linkbutton easyui-tooltip" data-options="iconCls:'icon-debug',position:'top'" title="Debug"></a> <!--debug-->
+          <a id="continue-button" href="#" class="easyui-linkbutton easyui-tooltip" data-options="iconCls:'icon-continue',position:'top'" title="Continue"></a> <!--continue-->
+          <a id="pause-button" href="#" class="easyui-linkbutton easyui-tooltip" data-options="iconCls:'icon-pause',position:'top'" title="Pause"></a> <!--pause-->
+          <a id="kill-button" href="#" style="margin-right: 10px;" class="easyui-linkbutton easyui-tooltip" data-options="iconCls:'icon-stop',position:'top'" title="Kill"></a> <!--kill-->
+          <a id="step-over-button" href="#" class="easyui-linkbutton easyui-tooltip" data-options="iconCls:'icon-step-over',position:'top'" title="Step over"></a> <!--over-->
+          <a id="step-into-button" href="#" class="easyui-linkbutton easyui-tooltip" data-options="iconCls:'icon-step-into',position:'top'" title="Step into"></a> <!--into-->
+          <a id="step-out-button" href="#" class="easyui-linkbutton easyui-tooltip" data-options="iconCls:'icon-step-out',position:'top'" title="Step out"></a> <!--out-->
         </div>
       </div>
     </div>

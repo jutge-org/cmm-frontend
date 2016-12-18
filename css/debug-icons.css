@@ -1,0 +1,78 @@
+/******************************************************************************
+
+  icon styles
+
+******************************************************************************/
+
+.icon-dot {
+  background:url("./icons/dot.png") no-repeat center center;
+}
+.icon-filenew {
+  background:url("./icons/filenew.png") no-repeat center center;
+}
+.icon-fileopen {
+  background:url("./icons/fileopen.png") no-repeat center center;
+}
+.icon-selectall {
+  background:url("./icons/selectall.png") no-repeat center center;
+}
+.icon-import {
+  background:url("./icons/import.png") no-repeat center center;
+}
+.icon-export {
+  background:url("./icons/export.png") no-repeat center center;
+}
+.icon-cpp-templates {
+  background:url("./icons/cpp-templates.png") no-repeat center center;
+}
+.icon-github {
+  background:url("./icons/github-icon.png") no-repeat center center;
+}
+
+.icon-info {
+  background:url("./icons/info-icon.png") no-repeat center left;
+}
+.icon-success {
+  background:url("./icons/ok.png") no-repeat center left;
+}
+.icon-error {
+  background:url("./icons/no.png") no-repeat center left;
+}
+
+
+.icon-cpp-plugin {
+  background:url("./icons/cpp-icon.png") no-repeat center left;
+}
+.icon-valgrind {
+  background:url("./icons/valgrind.png") no-repeat center center;
+}
+.icon-start {
+  background:url("./icons/Start.gif") no-repeat center center;
+}
+.icon-debug {
+  background:url("./icons/DebugProject.gif") no-repeat center center;
+}
+.icon-continue {
+  background:url("./icons/Continue.png") no-repeat center center;
+}
+.icon-stop {
+  background:url("./icons/Kill.png") no-repeat center center;
+}
+.icon-pause {
+  background:url("./icons/Pause.png") no-repeat center center;
+}
+.icon-step-into {
+  background:url("./icons/StepInto.png") no-repeat center center;
+}
+.icon-step-out {
+  background:url("./icons/StepOut.png") no-repeat center center;
+}
+.icon-step-over {
+  background:url("./icons/StepOver.png") no-repeat center center;
+}
+.icon-auto-pause {
+  background:url("./icons/auto-pause.png") no-repeat center center;
+}
+.icon-auto-play {
+  background:url("./icons/auto-play.png") no-repeat center center;
+}
