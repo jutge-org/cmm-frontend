@@ -31,14 +31,14 @@
           <a href="#" class="easyui-menubutton" data-options="menu:'#mm1'">File</a>
           <a href="#" class="easyui-menubutton" data-options="menu:'#mm2'">Execute</a>
           <a href="#" class="easyui-menubutton" data-options="menu:'#mm3'">Debug</a>
-          <a href="#" class="easyui-menubutton" data-options="menu:'#mm4'">About</a>
+          <a href="#" class="easyui-menubutton" data-options="menu:'#mm4'">Help</a>
         </div>
       </div>
 
       <div id="mm1" style="width:170px;">
-        <div>New</div>
-        <div>Open...</div>
-        <div>Save</div>
+        <div id="new-menu">New</div>
+        <!--<div id="open-menu">Open...</div>-->
+        <!--<div id="save-menu">Save</div>-->
         <div class="menu-sep"></div>
         <div>
           <span>Load example</span>
@@ -52,27 +52,32 @@
           </div>
         </div>
         <div class="menu-sep"></div>
-        <div>Create gist</div>
+        <div id="gist-menu">Create gist</div>
       </div>
 
       <div id="mm2" style="width:150px">
-        <div id="run-menu">Run</div>
-        <div id="kill-menu">Kill</div>
+        <div id="run-menu" data-options="iconCls:'icon-start'">Run</div>
+        <div id="kill-menu" data-options="iconCls:'icon-stop'">Kill</div>
       </div>
 
       <div id="mm3" style="width:150px;">
-        <div>Empty</div>
+        <div id="debug-menu" data-options="iconCls:'icon-debug'">Debug</div>
+        <div class="menu-sep"></div>
+        <div id="continue-menu" data-options="iconCls:'icon-continue'">Continue</div>
+        <div id="pause-menu" data-options="iconCls:'icon-pause'">Pause</div>
+        <div class="menu-sep"></div>
+        <div id="step-over-menu" data-options="iconCls:'icon-step-over'">Step over</div>
+        <div id="step-in-menu" data-options="iconCls:'icon-step-into'">Step in</div>
+        <div id="step-out-menu" data-options="iconCls:'icon-step-out'">Step out</div>
       </div>
 
       <div id="mm4" style="width:170px;">
-        <div>Empty</div>
+        <div id="about-menu">About...</div>
       </div>
 
-      <div data-options="region:'south',split:true" style="height:35%">
+      <div id="south-region" data-options="region:'south',split:true" style="height:35%">
 
-        <!-- Calc -->
-        <!-- Browser support is: IE9+, Firefox 16+ and with vendor prefix Firefox 4+, Chrome 19+, Safari 6+ -->
-        <div style="width:100%;height:-moz-calc(100% - 26px);height:-webkit-calc(100% - 26px);height:calc(100% - 26px)">
+        <div style="width:100%;height:100%;">
 
           <div class="easyui-tabs" style="width:100%;height:100%;">
             <div title="input/output">
@@ -80,13 +85,9 @@
             </div>
           </div>
         </div>
-        <div style="width:100%;height:26px">
-          <div id="exitstatus" style="border:1px solid blue;width:calc(100% - 2px);height:24px">Status bar</div>
-        </div>
       </div>
 
       <div data-options="region:'east',split:true" style="width:50%">
-        <!-- Plugins get this pane to paint things -->
         <div id="jtg-plugin-pane" style="width:100%;height:100%;">
 
           <div class="easyui-tabs" style="width:100%;height:100%;">
@@ -127,15 +128,31 @@
 
         <div style="width:100%;height:26px">
           <a id="run-button" href="#" style="margin-left: 10px;" class="easyui-linkbutton easyui-tooltip" data-options="iconCls:'icon-start',position:'top'" title="Run"></a> <!--run-->
-          <a id="debug-button" href="#" style="margin-right: 10px;" class="easyui-linkbutton easyui-tooltip" data-options="iconCls:'icon-debug',position:'top'" title="Debug"></a> <!--debug-->
-          <a id="continue-button" href="#" class="easyui-linkbutton easyui-tooltip" data-options="iconCls:'icon-continue',position:'top'" title="Continue"></a> <!--continue-->
-          <a id="pause-button" href="#" class="easyui-linkbutton easyui-tooltip" data-options="iconCls:'icon-pause',position:'top'" title="Pause"></a> <!--pause-->
+          <a id="debug-button" href="#" class="easyui-linkbutton easyui-tooltip" data-options="iconCls:'icon-debug',position:'top'" title="Debug"></a> <!--debug-->
           <a id="kill-button" href="#" style="margin-right: 10px;" class="easyui-linkbutton easyui-tooltip" data-options="iconCls:'icon-stop',position:'top'" title="Kill"></a> <!--kill-->
+          <a id="continue-button" href="#" class="easyui-linkbutton easyui-tooltip" data-options="iconCls:'icon-continue',position:'top'" title="Continue"></a> <!--continue-->
+          <a id="pause-button" href="#" style="margin-right: 10px;" class="easyui-linkbutton easyui-tooltip" data-options="iconCls:'icon-pause',position:'top'" title="Pause"></a> <!--pause-->
           <a id="step-over-button" href="#" class="easyui-linkbutton easyui-tooltip" data-options="iconCls:'icon-step-over',position:'top'" title="Step over"></a> <!--over-->
           <a id="step-into-button" href="#" class="easyui-linkbutton easyui-tooltip" data-options="iconCls:'icon-step-into',position:'top'" title="Step into"></a> <!--into-->
           <a id="step-out-button" href="#" class="easyui-linkbutton easyui-tooltip" data-options="iconCls:'icon-step-out',position:'top'" title="Step out"></a> <!--out-->
+          <div id="exitstatus" class="disp-inl" style="margin-left:10px;width:50%;border:1px solid blue;">Status bar</div>
         </div>
       </div>
+    </div>
+
+    <div id="dlg-gist" class="easyui-dialog" style="width:400px"
+            closed="true" buttons="#dlg-buttons">
+            <a id="dlg-gist-content" target="_newtab">'+dialog_title+'</a>
+    </div>
+
+    <div id="dlg-about" class="easyui-dialog" style="width:400px"
+            closed="true" buttons="#dlg-buttons">
+            <h1 style="text-align:center;font-size:40px;">C--</h1>
+            <h3>Authors: Ricard Gascons, Pau Oliver, Albert Segarra</h3>
+            <h3>Compiler version: 1.1</h3>
+            <h3>Website version: 1.1</h3>
+            <h3><a href="https://github.com/jutge-org/cmm" target="_newtab">Compiler source code</a></h3>
+            <h3><a href="https://github.com/jutge-org/cmm-frontend" target="_newtab">Webpage source code</a></h3>
     </div>
 
     <script src="js/terminal.js"></script>

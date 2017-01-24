@@ -35,6 +35,7 @@ makeCompilation = (code, showAst = no) ->
         console.log(error.stack ? error.message ? error)
         setErrorMsg "#{error.stack ? error.message ? error}"
         setStatus STATUS_MSGS.COMPILATION_ERROR, COLOR.RED
+        killVM()
         return
 
     setOutput "#{JSON.stringify(ast, null, 4)}" if showAst

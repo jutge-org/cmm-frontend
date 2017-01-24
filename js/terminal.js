@@ -21,7 +21,7 @@ jQuery(function($, undefined) {
   }, {
       greetings: '',
       name: 'cmm-terminal',
-      height: 200,
+      height: 226,
       prompt: ''
   });
 });

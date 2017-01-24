@@ -7,6 +7,10 @@ body {
   font-family:"Ubuntu Mono", Arial, sans-serif;
 }
 
+.disp-inl {
+  display:inline-block;
+}
+
 .jtg-layout {
   width:100%;
   height:100%;

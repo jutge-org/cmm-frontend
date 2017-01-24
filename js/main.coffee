@@ -2,9 +2,29 @@ window.w = null
 
 $ -> # Equivalent to $(document).ready(function() {...})
 
+    $('#south-region').resizable({disabled:true});
+
+    enableDebuggerButtons = ->
+        $("#continue-button,#pause-button,#step-out-button,#step-into-button,#step-over-button")
+          .removeClass("l-btn-disabled l-btn-plain-disabled")
+
+    disableDebuggerButtons = ->
+        $("#continue-button,#pause-button,#step-out-button,#step-into-button,#step-over-button")
+          .addClass("l-btn-disabled l-btn-plain-disabled")
+
+    enableRunDebugButtons = ->
+        $("#run-button,#debug-button")
+          .removeClass("l-btn-disabled l-btn-plain-disabled")
+
+    disableRunDebugButtons = ->
+        $("#run-button,#debug-button")
+          .addClass("l-btn-disabled l-btn-plain-disabled")
+
     mostRecentStackNumber = 0 # current stack number
     markedLines = {} # current breakpointed lines in the editor in the form of {lineNumber: markerObject}
     currentLine = 0 # current line of the program execution
+
+    disableDebuggerButtons()
 
 # Place the code editor
     editor = ace.edit("editor")
@@ -92,6 +112,12 @@ $ -> # Equivalent to $(document).ready(function() {...})
           ]]
         });
 
+    terminate = ->
+        editor.setReadOnly no
+        disableDebuggerButtons()
+        enableRunDebugButtons()
+        resetWorker()
+
     do resetWorker = ->
         window.w = new Worker("js/run.min.js")
 
@@ -125,8 +151,7 @@ $ -> # Equivalent to $(document).ready(function() {...})
                 range = new aceRange(row, 0, row, 1);
                 markedLines[row] = editor.session.addMarker(range, "current-line", "fullLine", true);
             else #terminate
-                editor.setReadOnly no
-                resetWorker()
+                terminate()
 
 
     $("#compile").click(->
@@ -136,23 +161,26 @@ $ -> # Equivalent to $(document).ready(function() {...})
     $("#run-button,#run-menu").click(->
         editor.setReadOnly yes
         $.terminal.active().focus()
+        disableRunDebugButtons()
         window.w.postMessage({ command: "run", code: editor.getValue(), input: buffer })
     )
 
     $("#debug-button,#debug-menu").click(->
         editor.setReadOnly yes
         $.terminal.active().focus()
+        enableDebuggerButtons()
+        disableRunDebugButtons()
         window.w.postMessage({ command: "debug", code: editor.getValue(), input: buffer, breakpoints: getBreakpoints() })
     )
 
     $("#kill-button,#kill-menu").click(->
-        editor.setReadOnly no
-        $("#exitstatus").text("Killed")
+        $("#exitstatus").text("Program killed")
+        $("#exitstatus").css("background-color", "white")
         window.w.terminate()
-        resetWorker()
+        terminate()
     )
 
-    $("#continue-button").click(->
+    $("#continue-button,#continue-menu").click(->
         $.terminal.active().focus()
         editor.getSession().removeMarker markedLines[currentLine]
         range = new aceRange(currentLine, 0, currentLine, 1);
@@ -160,23 +188,74 @@ $ -> # Equivalent to $(document).ready(function() {...})
         window.w.postMessage({ command: "continue", breakpoints: getBreakpoints() })
     )
 
-    $("#pause-button").click(->
+    $("#pause-button,#pause-menu").click(->
         window.w.postMessage({ command: "pause" })
     )
 
-    $("#step-out-button").click(->
+    $("#step-out-button,#step-out-menu").click(->
         window.w.postMessage({ command: "step-out" })
         window.w.postMessage({ command: "continue", breakpoints: getBreakpoints() })
     )
 
-    $("#step-over-button").click(->
+    $("#step-over-button,#step-over-menu").click(->
         window.w.postMessage({ command: "step-over" })
         window.w.postMessage({ command: "continue", breakpoints: getBreakpoints() })
     )
 
-    $("#step-into-button").click(->
+    $("#step-into-button,#step-into-menu").click(->
         window.w.postMessage({ command: "step-into" })
         window.w.postMessage({ command: "continue", breakpoints: getBreakpoints() })
+    )
+
+    $("#new-menu").click(->
+        editor.setValue(samplePrograms.default_template.code, -1)
+        breakpoints = editor.session.getBreakpoints(undefined, 0)
+        for b of breakpoints
+            editor.session.clearBreakpoint(b);
+        for row of markedLines
+            editor.getSession().removeMarker markedLines[row]
+        markedLines = {}
+    )
+
+    '''$("#open-menu").click(->
+        file = e.target.files[0];
+        if (!file) {
+          return;
+        }
+        var reader = new FileReader();
+        reader.onload = function(e) {
+          var contents = e.target.result;
+          // Display file content
+          displayContents(contents);
+        };
+        reader.readAsText(file);
+    )'''
+
+    $("#gist-menu").click(->
+        payload = {
+                    "description": "My C-- Program",
+                    "public": true,
+                    "files": {
+                      "my_program.cpp": {
+                        "content": editor.getValue()
+                      }
+                    }
+                  }
+        http = new XMLHttpRequest()
+        url = "https://api.github.com/gists"
+        http.open "POST", url, true
+        http.setRequestHeader("Content-type", "application/json")
+        http.onreadystatechange = ->
+          if http.readyState == 4 && http.status == 201
+              $('#dlg-gist').dialog('open').dialog('center').dialog('setTitle','New gist created')
+              html_url = JSON.parse(http.responseText).html_url
+              $('#dlg-gist-content').text(html_url)
+              $('#dlg-gist-content').attr('href', html_url)
+        http.send JSON.stringify payload
+    )
+
+    $("#about-menu").click(->
+      $('#dlg-about').dialog('open').dialog('center').dialog('setTitle','About...')
     )
 
     $("#example-menu > div").click(->
